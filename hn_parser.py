@@ -1,3 +1,4 @@
+import os
 import requests
 import time
 from datetime import datetime
@@ -7,6 +8,9 @@ from openpyxl.styles import Font
 BASE_URL = "https://hacker-news.firebaseio.com/v0"
 OUTPUT_FILE = "hn_top100.xlsx"
 LIMIT = 100
+
+TG_BOT_TOKEN = os.getenv("TG_BOT_TOKEN")
+TG_CHAT_ID = os.getenv("TG_CHAT_ID")
 
 def fetch_top_ids(limit=LIMIT):
     url = f"{BASE_URL}/topstories.json"
@@ -75,6 +79,33 @@ def save_to_excel(stories, filename=OUTPUT_FILE):
         cell.font = Font(color="0000FF", underline="single")
     
     wb.save(filename)
+
+def send_to_telegram(stories):
+    if not TG_BOT_TOKEN or not TG_CHAT_ID:
+        print("Telegram credentials not set. Skipping.")
+        return
+
+    lines = ["<b>HN Top 5:</b>\n"]
+
+    for i, s in enumerate(stories[:5], 1):
+        lines.append(f'{i}. <a href="{s["url"]}">{s["title"]}</a> ({s["score"]} points)')
+
+    text = "\n".join(lines)
+    url = f"https://api.telegram.org/bot{TG_BOT_TOKEN}/sendMessage"
+
+    payload = {
+        "chat_id": TG_CHAT_ID,
+        "text": text,
+        "parse_mode": "HTML",
+        "disable_web_page_preview": True,
+    }
+
+    try:
+        response = requests.post(url, json=payload, timeout=10)
+        response.raise_for_status()
+        print("Telegram message sent.")
+    except requests.RequestException as e:
+        print(f"Telegram error: {e}")
 
 def main():
     print("Fetching top stories IDs...")

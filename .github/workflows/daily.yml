@@ -1,0 +1,29 @@
+name: Daily HN Top 100
+
+on:
+  schedule:
+    # Каждый день в 6:00 UTC (9:00 МСК)
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+
+jobs:
+  parse-and-send:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run parser
+        env:
+          TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}
+          TG_CHAT_ID: ${{ secrets.TG_CHAT_ID }}
+        run: python hn_parser.py
