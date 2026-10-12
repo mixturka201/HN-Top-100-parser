@@ -122,5 +122,8 @@ def main():
 
     print(f"Done! {len(stories)} stories saved.")
 
+    print("Sending to Telegram...")
+    send_to_telegram(stories)
+
 if __name__ == "__main__":
     main()
