@@ -108,6 +108,10 @@ def send_to_telegram(stories):
         print(f"Telegram error: {e}")
 
 def main():
+    print("=== START ===")
+    print(f"TOKEN: {'yes' if TG_BOT_TOKEN else 'no'}")
+    print(f"CHAT_ID: {'yes' if TG_CHAT_ID else 'no'}")
+
     print("Fetching top stories IDs...")
     ids = fetch_top_ids()
 
@@ -120,10 +124,10 @@ def main():
     print(f"Saving to {OUTPUT_FILE}...")
     save_to_excel(stories)
 
-    print(f"Done! {len(stories)} stories saved.")
-
     print("Sending to Telegram...")
     send_to_telegram(stories)
+
+    print(f"Done! {len(stories)} stories saved.")
 
 if __name__ == "__main__":
     main()
