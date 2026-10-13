@@ -36,3 +36,7 @@ python hn_parser.py
 Используется публичный API Hacker News: https://github.com/HackerNews/API
 
 Без авторизации, без ключей.
+
+## License
+
+This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
