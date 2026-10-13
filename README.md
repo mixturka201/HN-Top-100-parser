@@ -1,5 +1,7 @@
 # Hacker News Top 100 Parser
 
+![Daily HN Top 100](https://github.com/mixturka201/HN-Top-100-parser/actions/workflows/daily.yml/badge.svg)
+
 Парсер топ-100 новостей с [Hacker News](https://news.ycombinator.com) через официальный API
 
 ## Описание
